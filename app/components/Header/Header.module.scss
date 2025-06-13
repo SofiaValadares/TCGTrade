@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900');
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  background-color: #1A1522;
+  padding-inline: 20px;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(to right, #D93B3B, #5DCAF2);
+}
+
+.header-content {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h1 {
+  font-size: 30px;
+}
