@@ -4,7 +4,8 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/app/services/auth";
-import styles from "./login.module.scss"; 
+import styles from "./login.module.scss";
+import Header from "@/app/components/Header";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ export default function LoginPage() {
     onSuccess: (data) => {
       if (data.jwt) {
         localStorage.setItem("jwt_token", data.jwt); 
-        router.push("/dashboard"); 
+        router.push("/home");
       } else {
         alert("Login falhou: Token não recebido.");
       }
@@ -33,6 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.loginContainer}>
+      <Header />
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h1>Login</h1>
         <div className={styles.inputGroup}>
