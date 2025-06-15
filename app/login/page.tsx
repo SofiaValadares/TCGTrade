@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/app/services/auth";
 import styles from "./login.module.scss";
 import Header from "@/app/components/Header";
+import { IoPersonOutline } from "react-icons/io5";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -33,39 +34,46 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.loginContainer}>
+    <div className={styles.container}>
       <Header />
-      <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <h1>Login</h1>
-        <div className={styles.inputGroup}>
-          <label htmlFor="username">Usuário</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={mutation.isPending} className={styles.loginButton}>
-          {mutation.isPending ? "Entrando..." : "Entrar"}
-        </button>
-        {mutation.isError && (
-          <p className={styles.errorMessage}>
-            Erro: {mutation.error?.message || "Ocorreu um erro."}
-          </p>
-        )}
-      </form>
+      <div className={styles.loginContainer}>
+        <form onSubmit={handleSubmit} className={styles.loginForm}>
+          <div className={styles.loginTitle}>
+            <IoPersonOutline color="#FFF3E5" size={32} />
+            <h1>login</h1>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <input
+                id="username"
+                type="text"
+                placeholder="nome de usuário"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <input
+                id="password"
+                type="password"
+                placeholder="senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            />
+          </div>
+          <button type="submit" disabled={mutation.isPending} className={styles.loginButton}>
+            {mutation.isPending ? "Entrando..." : "Entrar"}
+          </button>
+          {mutation.isError && (
+              <p className={styles.errorMessage}>
+                Erro: {mutation.error?.message || "Ocorreu um erro."}
+              </p>
+          )}
+        </form>
+      </div>
+
     </div>
   );
 }
