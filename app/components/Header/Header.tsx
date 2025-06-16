@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import { IoPersonCircle } from "react-icons/io5";
 import styles from './Header.module.scss';
-import {usePathname, useRouter} from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface HeaderProps {
     handleLogout?: () => void;
@@ -9,8 +11,10 @@ interface HeaderProps {
 
 export default function Header({ handleLogout = () => {} }: HeaderProps) {
     const [token, setToken] = useState<string | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const menuRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
     const pathname = usePathname();
 
@@ -25,7 +29,13 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as Node)
             ) {
-                setIsOpen(false);
+                setIsDropdownOpen(false);
+            }
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
@@ -36,16 +46,16 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
 
     const goToProfile = () => {
         alert('Indo para Perfil (placeholder)');
-        setIsOpen(false);
+        setIsDropdownOpen(false);
     };
 
     const goToSettings = () => {
         alert('Indo para Configurações (placeholder)');
-        setIsOpen(false);
+        setIsDropdownOpen(false);
     };
 
-    const handleToggle = () => {
-        setIsOpen(prev => !prev);
+    const handleToggleDropdown = () => {
+        setIsDropdownOpen(prev => !prev);
     };
 
     return (
@@ -58,15 +68,14 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                         <div
                             className={styles.profile}
                             ref={dropdownRef}
-                            onMouseEnter={() => setIsOpen(true)}
                         >
                             <IoPersonCircle
                                 size={40}
                                 color="#FFF3E5"
-                                onClick={handleToggle}
+                                onClick={handleToggleDropdown}
                                 style={{ cursor: 'pointer' }}
                             />
-                            {isOpen && (
+                            {isDropdownOpen && (
                                 <div className={styles.dropdown}>
                                     <ul>
                                         <li onClick={goToProfile}>Perfil</li>
@@ -74,7 +83,7 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                                         <li
                                             onClick={() => {
                                                 handleLogout();
-                                                setIsOpen(false);
+                                                setIsDropdownOpen(false);
                                             }}
                                         >
                                             Sair
@@ -89,11 +98,51 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                                 className={styles.login}
                                 onClick={() => router.push('/login')}
                             >
-                            Fazer Login
-                            </span>
+                Fazer Login
+              </span>
                         )
                     )}
                 </div>
+            </div>
+
+            {/* 🔥 Gradient com menu expandível */}
+            <div
+                className={`${styles.gradientMenu} ${isMenuOpen ? styles.open : ''}`}
+                ref={menuRef}
+                onMouseEnter={() => setIsMenuOpen(true)}
+                onMouseLeave={() => setIsMenuOpen(false)}
+            >
+                {isMenuOpen && (
+                    <div className={styles.menuContent}>
+                        <div
+                            className={styles.menuItem}
+                            onClick={() => {
+                                router.push('/home');
+                                setIsMenuOpen(false);
+                            }}
+                        >
+                            POKÉMONS
+                        </div>
+                        <div
+                            className={styles.menuItem}
+                            onClick={() => {
+                                alert('Indo para Coleções');
+                                setIsMenuOpen(false);
+                            }}
+                        >
+                            COLEÇÕES
+                        </div>
+                        {token && (<div
+                            className={styles.menuItem}
+                            onClick={() => {
+                                alert('Indo para Minha Vitrine');
+                                setIsMenuOpen(false);
+                            }}
+                        >
+                            MINHA VITRINE
+                        </div>)}
+                    </div>
+                )}
             </div>
         </div>
     );

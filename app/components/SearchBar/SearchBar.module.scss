@@ -1,0 +1,38 @@
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #2a2236;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 0;
+
+  gap: 8px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    color: #fff3e5;
+    font-size: 16px;
+    outline: none;
+
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff3e5;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #5DCAF2;
+    }
+  }
+}

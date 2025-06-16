@@ -1,31 +1,54 @@
 .header {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   background-color: #1A1522;
-  padding-inline: 5vw;
   position: relative;
 }
 
-.header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 5px;
-  width: 100%;
-  background: linear-gradient(to right, #D93B3B, #5DCAF2);
-}
-
 .headerContent {
-  width: 100%;
+  width: 90vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-inline: 5vw;
 }
 
 .headerContent h1 {
   font-size: 30px;
-  color: white;
+  color: #FFF3E5;
+  cursor: pointer;
+}
+
+.gradientMenu {
+  background: linear-gradient(to right, #D93B3B, #5DCAF2);
+  height: 5px;
+  width: 100%;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.gradientMenu.open {
+  height: 10vh;
+}
+
+.menuContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 5vw;
+  flex-direction: row;
+  height: 100%;
+}
+
+.menuItem {
+  color: #1A1522;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 18px;
+}
+
+.menuItem:hover {
+  color: #FFF3E5;
 }
 
 .action {
@@ -35,9 +58,11 @@
 }
 
 .login {
-  color: white;
+  color: #FFF3E5;
   font-size: 18px;
+  cursor: pointer;
 }
+
 .profile {
   position: relative;
   display: flex;
@@ -64,7 +89,7 @@
 
 .dropdown li {
   padding: 8px 12px;
-  color: white;
+  color: #FFF3E5;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s ease;
