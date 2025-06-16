@@ -1,8 +1,7 @@
 .searchBar {
   display: flex;
   align-items: center;
-  background-color: #2a2236;
-  border: 1px solid #444;
+  background-color: var(--background-color-secondary);
   border-radius: 8px;
   padding: 8px 12px;
   flex: 1;
@@ -15,12 +14,12 @@
     min-width: 0;
     background: transparent;
     border: none;
-    color: #fff3e5;
+    color: var(--text-primary);
     font-size: 16px;
     outline: none;
 
     &::placeholder {
-      color: #aaa;
+      color: var(--text-secondary);
     }
   }
 
@@ -28,11 +27,11 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #fff3e5;
+    color: var(--text-primary);
     transition: color 0.2s;
 
     &:hover {
-      color: #5DCAF2;
+      color: var(--light-blue);
     }
   }
 }

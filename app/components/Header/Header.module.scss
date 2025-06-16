@@ -1,7 +1,7 @@
 .header {
   display: flex;
   flex-direction: column;
-  background-color: #1A1522;
+  background-color: var(--background-color);
   position: relative;
 }
 
@@ -15,12 +15,12 @@
 
 .headerContent h1 {
   font-size: 30px;
-  color: #FFF3E5;
+  color: var(--text-primary);
   cursor: pointer;
 }
 
 .gradientMenu {
-  background: linear-gradient(to right, #D93B3B, #5DCAF2);
+  background: var(--primary-gradient);
   height: 5px;
   width: 100%;
   transition: height 0.3s ease;
@@ -41,14 +41,14 @@
 }
 
 .menuItem {
-  color: #1A1522;
+  color: var(--background-color);
   cursor: pointer;
   transition: color 0.2s;
   font-size: 18px;
 }
 
 .menuItem:hover {
-  color: #FFF3E5;
+  color: var(--text-primary);
 }
 
 .action {
@@ -58,7 +58,7 @@
 }
 
 .login {
-  color: #FFF3E5;
+  color: var(--text-primary);
   font-size: 18px;
   cursor: pointer;
 }
@@ -73,8 +73,8 @@
   position: absolute;
   top: 50px;
   right: 0;
-  background-color: #2A2236;
-  border: 1px solid #444;
+  background-color: var(--background-color-secondary);
+  border: 1px solid var(--text-secondary);
   border-radius: 8px;
   padding: 10px;
   z-index: 999;
@@ -89,12 +89,12 @@
 
 .dropdown li {
   padding: 8px 12px;
-  color: #FFF3E5;
+  color: var(--text-primary);
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
 
 .dropdown li:hover {
-  background-color: #3B2F4C;
+  background-color: var(--background-color-secondary);
 }

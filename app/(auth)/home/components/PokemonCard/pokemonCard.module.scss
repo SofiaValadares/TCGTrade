@@ -1,0 +1,21 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    font-size: 11px;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  background-color: var(--background-color-secondary);
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  width: 70px;
+  padding: 1rem;
+  border-radius: 8px;
+}
+

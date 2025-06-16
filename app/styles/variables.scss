@@ -1,0 +1,17 @@
+:root {
+  --background-color: #1A1522;
+  --background-color-secondary: #2A2236;
+
+  --text-primary: #FFF3E5;
+  --text-secondary: #686868;
+
+  --light-blue: #5DCAF2;
+  --medium-blue: #3484A1;
+  --dark-blue: #09384A;
+
+  --light-red: #D93B3B;
+  --medium-red: #942E2E;
+  --dark-red: #3D1F1F;
+
+  --primary-gradient: linear-gradient(to right, var(--light-red), var(--light-blue));
+}

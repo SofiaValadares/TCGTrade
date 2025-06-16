@@ -15,21 +15,26 @@ export interface PokemonPageRecordDto {
   order?: "asc" | "desc";
   name?: string;
   number?: number;
+  generation?: number;
 }
 
 export interface PokemonRecordDto {
-  numPokemon: number;
+  number: number;
   name: string;
+  generation: number;
   primaryType: PokemonType;
   secondaryType?: PokemonType;
+  imageUrl?: string;
 }
 
 export interface PokemonResponseDto extends BaseAuditFields {
   idPokemon: number;
   name: string;
-  numPokemon: number;
+  number: number;
+  generation: number;
   primaryType: PokemonType;
   secondaryType?: PokemonType;
+  imageUrl?: string;
 }
 
 export interface PagePokemonResponseDto extends BasePageResponse<PokemonResponseDto> {}

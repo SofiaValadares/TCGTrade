@@ -1,7 +1,7 @@
 .button {
   background-color: transparent;
-  color: white;
-  border: 2px solid #f7e9dd; /* padrão se não passar cor */
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary); /* padrão se não passar cor */
   border-radius: 8px;
   padding: 8px 24px;
   font-size: 16px;
@@ -10,25 +10,25 @@
 }
 
 .button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--text-secondary);
 }
 
 /* Cor azul */
 .button.blue {
-  border-color: #2798c8;
+  border-color: var(--light-blue);
 }
 
 .button.blue:hover {
-  background-color: #2798c8;
-  color: #fff;
+  background-color: var(--light-blue);
+  color: var(--text-primary);
 }
 
 /* Cor vermelha */
 .button.red {
-  border-color: #e04e4e;
+  border-color: var(--light-red);
 }
 
 .button.red:hover {
-  background-color: #e04e4e;
-  color: #fff;
+  background-color: var(--light-red);
+  color: var(--text-primary);
 }

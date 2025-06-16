@@ -25,7 +25,7 @@
     gap: 1rem;
 
     .h1 {
-      color: #FFF3E5;
+      color: var(--text-primary);
     }
   }
 }
@@ -37,19 +37,19 @@
   label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #FFF3E5;
+    color: var(--text-primary);
     font-weight: 500;
   }
 
   input {
     width: 100%;
     padding: 0.75rem 1rem;
-    background-color: #1A1522;
-    border: 1px solid #FFF3E5;
+    background-color: var(--background-color);
+    border: 1px solid var(--text-primary);
     border-radius: 4px;
     box-sizing: border-box; 
     font-size: 1rem;
-    color: #FFF3E5;
+    color: var(--text-primary);
   }
 
   .input::placeholder {
@@ -64,7 +64,7 @@
 }
 
 .errorMessage {
-  color: #dc3545; 
+  color: var(--light-red);
   margin-top: 1rem;
   font-size: 0.9rem;
 }

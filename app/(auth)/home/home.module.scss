@@ -6,3 +6,19 @@
   padding: 2vh 2vw;
   width: 96vw;
 }
+
+.generationSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+   .h1{
+     border-bottom: var(--primary-gradient);
+   }
+
+  .pokemonSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
