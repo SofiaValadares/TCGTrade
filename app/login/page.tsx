@@ -7,6 +7,7 @@ import { login } from "@/app/services/auth";
 import styles from "./login.module.scss";
 import Header from "@/app/components/Header";
 import { IoPersonOutline } from "react-icons/io5";
+import Button from "@/app/components/Button";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -63,9 +64,12 @@ export default function LoginPage() {
                 required
             />
           </div>
-          <button type="submit" disabled={mutation.isPending} className={styles.loginButton}>
-            {mutation.isPending ? "Entrando..." : "Entrar"}
-          </button>
+
+          <div className={styles.loginButtonRow}>
+            <Button mensage="LOGIN" color="blue" onClick={() => console.log('Login clicado')} />
+            <Button mensage="CADASTRO" color="red" onClick={() => console.log('Abrir cadastro')} />
+          </div>
+
           {mutation.isError && (
               <p className={styles.errorMessage}>
                 Erro: {mutation.error?.message || "Ocorreu um erro."}

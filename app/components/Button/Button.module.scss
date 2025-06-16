@@ -1,0 +1,34 @@
+.button {
+  background-color: transparent;
+  color: white;
+  border: 2px solid #f7e9dd; /* padrão se não passar cor */
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Cor azul */
+.button.blue {
+  border-color: #2798c8;
+}
+
+.button.blue:hover {
+  background-color: #2798c8;
+  color: #fff;
+}
+
+/* Cor vermelha */
+.button.red {
+  border-color: #e04e4e;
+}
+
+.button.red:hover {
+  background-color: #e04e4e;
+  color: #fff;
+}
