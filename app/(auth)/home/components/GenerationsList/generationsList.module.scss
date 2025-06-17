@@ -1,0 +1,17 @@
+.generationSection {
+  display: flex;
+  flex-direction: column;
+  padding: 2vh 2vw;
+  gap: 0.05rem;
+
+  .p {
+    color: var(--text-secondary);
+  }
+
+  .pokemonSection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

@@ -9,6 +9,7 @@
 }
 
 .imageContainer {
+  position: relative; // Permite posicionar elementos dentro
   display: flex;
   background-color: var(--background-color-secondary);
   justify-content: center;
@@ -19,3 +20,13 @@
   border-radius: 8px;
 }
 
+.dexNumber {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  color: var(--text-primary);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}

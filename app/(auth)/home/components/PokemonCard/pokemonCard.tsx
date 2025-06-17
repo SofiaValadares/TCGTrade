@@ -1,29 +1,27 @@
-import style from './pokemonCard.module.scss';
-import { theme } from '@/app/styles/theme';
-import { MdCatchingPokemon } from "react-icons/md";
+import styles from './pokemonCard.module.scss';
+import {PokemonResponseDto} from "@/app/types/pokemon";
+import {MdCatchingPokemon} from "react-icons/md";
+import { theme } from "@/app/styles/theme"
 
-interface PokemonProps {
-    name: string;
-    number: number;
-    image?: string;
+interface PokemonCardProps {
+    pokemon: PokemonResponseDto;
 }
-export default function PokemonCard({ name, number, image }: PokemonProps) {
+
+export default function PokemonCard({ pokemon }: PokemonCardProps) {
     return (
-        <div className={style.card}>
-            <div className={style.imageContainer}>
-                {image ? (
+        <div className={styles.card}>
+            <div className={styles.imageContainer}>
+                <span className={styles.dexNumber}>#{pokemon.number}</span>
+                {pokemon.imageUrl ? (
                     <img
-                        src={image}
-                        alt={name}
+                        src={pokemon.imageUrl}
+                        alt={pokemon.name}
                     />
                 ) : (
                     <MdCatchingPokemon color={theme.text.primary} size={50} />
                 )}
             </div>
-
-            <h1>{name}</h1>
-
+            <h1>{pokemon.name}</h1>
         </div>
-    )
-
+    );
 }
