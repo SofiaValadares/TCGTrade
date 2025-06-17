@@ -47,8 +47,9 @@ export default function HomePage() {
                 {isLoading && <p>Carregando gerações...</p>}
                 {error && <p>Erro ao carregar gerações</p>}
                 {generations && generations.map((generation) => (
-                    <div className={style.searchSection}>
-                        <h1 key={generation.idGeneration}>{generation.region}</h1>
+                    <div key={generation.idGeneration} className={style.searchSection}>
+                        <h1>{generation.region.toUpperCase()}</h1>
+                        <p>GERAÇÃO {generation.number}</p>
                     </div>
                 ))}
             </div>
