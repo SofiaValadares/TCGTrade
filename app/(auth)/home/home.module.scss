@@ -4,13 +4,13 @@
   align-items: center;
   gap: 1rem;
   padding: 2vh 2vw;
-  width: 96vw;
 }
 
 .generationSection {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  padding: 2vh 2vw;
+  gap: 0.05rem;
 
   .p {
     color: var(--text-secondary);
@@ -19,6 +19,7 @@
   .pokemonSection {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
   }
 }

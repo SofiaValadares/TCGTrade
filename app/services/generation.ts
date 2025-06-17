@@ -1,17 +1,18 @@
 import { fetchAPI } from '@/app/lib/apiClient';
 import {
-  GenerationRecordDto, 
+  GenerationListResponseDto,
+  GenerationRecordDto,
   GenerationResponseDto
 } from '@/app/types/generation';
 
-export const getAllGeneration = async (): Promise<GenerationResponseDto[]> => {
-  return fetchAPI<GenerationResponseDto[]>('/api/generation', {
+export const getAllGeneration = async (): Promise<GenerationListResponseDto[]> => {
+  return fetchAPI<GenerationListResponseDto[]>('/api/generation', {
     method: 'GET'
   });
 };
 
-export const getOneGeneration = async (id: number): Promise<GenerationResponseDto> => {
-  return fetchAPI<GenerationResponseDto>(`/api/generation/${id}`, {
+export const getOneGeneration = async (id: number): Promise<GenerationListResponseDto> => {
+  return fetchAPI<GenerationListResponseDto>(`/api/generation/${id}`, {
     method: 'GET'
   });
 };

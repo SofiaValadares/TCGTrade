@@ -6,16 +6,14 @@ import SearchBar from "@/app/components/SearchBar/SearchBar";
 import Button from "@/app/components/Button";
 import Select from "@/app/components/Select";
 import { useQuery } from '@tanstack/react-query';
-import { getAllPokemons } from '@/app/services/pokemon';
-import { PokemonResponseDto } from '@/app/types/pokemon';
-import PokemonCard from "@/app/(auth)/home/components/PokemonCard/pokemonCard";
-import {GenerationResponseDto} from "@/app/types/generation";
+import {GenerationListResponseDto} from "@/app/types/generation";
 import {getAllGeneration} from "@/app/services/generation";
+import PokemonCard from "@/app/(auth)/home/components/PokemonCard/pokemonCard";
 
 export default function HomePage() {
     const [type, setType] = useState('name');
 
-    const { data: generations, isLoading, error } = useQuery<GenerationResponseDto[]>({
+    const { data: generations, isLoading, error } = useQuery<GenerationListResponseDto[]>({
             queryKey: ['generation'],
             queryFn: getAllGeneration
     });
@@ -47,9 +45,13 @@ export default function HomePage() {
                 {isLoading && <p>Carregando gerações...</p>}
                 {error && <p>Erro ao carregar gerações</p>}
                 {generations && generations.map((generation) => (
-                    <div key={generation.idGeneration} className={style.searchSection}>
+                    <div key={generation.idGeneration} className={style.generationSection}>
                         <h1>{generation.region.toUpperCase()}</h1>
                         <p>GERAÇÃO {generation.number}</p>
+
+                        <div className={style.pokemonSection}>
+                            {generation.pokemons.map(pokemon => (<PokemonCard key={pokemon.idPokemon} name={pokemon.name} number={pokemon.number} image={pokemon.imageUrl} />))}
+                        </div>
                     </div>
                 ))}
             </div>

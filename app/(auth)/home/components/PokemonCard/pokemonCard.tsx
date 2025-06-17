@@ -1,5 +1,6 @@
 import style from './pokemonCard.module.scss';
-import {PokemonResponseDto} from "@/app/types/pokemon";
+import { theme } from '@/app/styles/theme';
+import { MdCatchingPokemon } from "react-icons/md";
 
 interface PokemonProps {
     name: string;
@@ -10,7 +11,14 @@ export default function PokemonCard({ name, number, image }: PokemonProps) {
     return (
         <div className={style.card}>
             <div className={style.imageContainer}>
-                <img src={image} alt="" />
+                {image ? (
+                    <img
+                        src={image}
+                        alt={name}
+                    />
+                ) : (
+                    <MdCatchingPokemon color={theme.text.primary} size={50} />
+                )}
             </div>
 
             <h1>{name}</h1>
