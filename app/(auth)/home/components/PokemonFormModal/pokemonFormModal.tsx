@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./pokemonFormModal.module.scss";
-import { PokemonRecordDto, PokemonResponseDto, PokemonType } from "@/app/types/pokemon";
+import {
+    PokemonRecordDto,
+    PokemonResponseDto,
+    PokemonType,
+} from "@/app/types/pokemon";
 import Input from "@/app/components/Input";
 import Select from "@/app/components/Select";
 import { useGenerations } from "@/app/hooks/useGenerations";
-import { useCreatePokemon } from "@/app/hooks/useCreatePokemon";
 import Button from "@/app/components/Button";
-
 
 interface PokemonFormModalProps {
     isOpen: boolean;
@@ -25,15 +27,15 @@ export default function PokemonFormModal({
                                              initialData,
                                              isLoading = false,
                                          }: PokemonFormModalProps) {
-    const { data: generations, isLoading: isLoadingGenerations } = useGenerations();
-    const { mutate: createPokemon, isPending: isCreating } = useCreatePokemon();
+    const { data: generations, isLoading: isLoadingGenerations } =
+        useGenerations();
 
     const [name, setName] = useState<string>("");
     const [number, setNumber] = useState<number>(0);
     const [generation, setGeneration] = useState<number>(1);
     const [primaryType, setPrimaryType] = useState<PokemonType>("NORMAL");
-    const [secondaryType, setSecondaryType] = useState<PokemonType | undefined>(undefined);
-    const [imageUrl, setImageUrl] = useState<string | undefined>();
+    const [secondaryType, setSecondaryType] = useState<PokemonType | undefined>();
+    const [imageUrl, setImageUrl] = useState<string>("");
 
     useEffect(() => {
         if (initialData) {
@@ -42,14 +44,14 @@ export default function PokemonFormModal({
             setGeneration(initialData.generation);
             setPrimaryType(initialData.primaryType);
             setSecondaryType(initialData.secondaryType ?? undefined);
-            setImageUrl(initialData.imageUrl);
+            setImageUrl(initialData.imageUrl ?? "");
         } else {
             setName("");
             setNumber(0);
             setGeneration(1);
             setPrimaryType("NORMAL");
             setSecondaryType(undefined);
-            setImageUrl(undefined);
+            setImageUrl("");
         }
     }, [initialData]);
 
@@ -60,21 +62,17 @@ export default function PokemonFormModal({
             generation,
             primaryType,
             secondaryType,
-            imageUrl,
+            imageUrl: imageUrl.trim() !== "" ? imageUrl.trim() : undefined,
         };
 
-        createPokemon(payload, {
-            onSuccess: () => {
-                onClose();
-            },
-            onError: (error) => {
-                console.error("Erro ao criar Pokémon:", error);
-                alert("Erro ao criar Pokémon");
-            },
-        });
+        onSubmit(payload);
     };
 
-
+    const isFormValid =
+        number > 0 &&
+        name.trim() !== "" &&
+        generation > 0 &&
+        primaryType.trim() !== "";
 
     if (!isOpen) return null;
 
@@ -84,13 +82,12 @@ export default function PokemonFormModal({
                 <h2>{initialData ? "Editar Pokémon" : "Criar Pokémon"}</h2>
                 <form className={styles.form}>
                     <label>
-                        Pokedex
+                        Pokedex *
                         <Input
                             placeholder="Número na Dex *"
-                            value={number > 0 ? String(number) : ''}
+                            value={number > 0 ? String(number) : ""}
                             onChange={(val) => {
                                 const parsed = Number(val);
-
                                 if (isNaN(parsed) || parsed <= 0) {
                                     setNumber(0);
                                 } else {
@@ -101,7 +98,7 @@ export default function PokemonFormModal({
                     </label>
 
                     <label>
-                        Nome
+                        Nome *
                         <Input
                             placeholder="Nome *"
                             value={name}
@@ -110,31 +107,34 @@ export default function PokemonFormModal({
                     </label>
 
                     <label>
-                        Geração
+                        Geração *
                         <Select
-                            placeholder={isLoadingGenerations ? "Carregando..." : "Selecione a geração"}
+                            placeholder={
+                                isLoadingGenerations ? "Carregando..." : "Selecione a geração"
+                            }
                             value={String(generation)}
                             onChange={(val) => setGeneration(Number(val))}
                             options={
                                 generations?.map((gen) => ({
-                                    label: `${gen.number} GERAÇÃO`,
+                                    label: `${gen.number} - ${gen.region}`,
                                     value: String(gen.number),
                                 })) || []
                             }
                         />
                     </label>
 
-
                     <label>
-                        Tipo Primário
+                        Tipo Primário *
                         <Select
                             placeholder="Tipo Primário *"
                             value={primaryType}
                             onChange={(val) => setPrimaryType(val as PokemonType)}
-                            options={POKEMON_TYPES.map((type) => ({
-                                label: type,
-                                value: type,
-                            }))}
+                            options={POKEMON_TYPES
+                                .filter((type) => type !== secondaryType)
+                                .map((type) => ({
+                                    label: type,
+                                    value: type,
+                                }))}
                         />
                     </label>
 
@@ -142,36 +142,39 @@ export default function PokemonFormModal({
                         Tipo Secundário
                         <Select
                             placeholder="Tipo Secundário"
-                            value={secondaryType ?? ''}
+                            value={secondaryType ?? ""}
                             onChange={(val) =>
-                                setSecondaryType(val === '' ? undefined : (val as PokemonType))
+                                setSecondaryType(
+                                    val === "" ? undefined : (val as PokemonType)
+                                )
                             }
-                            options={POKEMON_TYPES.map((type) => ({
-                                label: type,
-                                value: type,
-                            }))}
+                            options={POKEMON_TYPES
+                                .filter((type) => type !== primaryType)
+                                .map((type) => ({
+                                    label: type,
+                                    value: type,
+                                }))}
                         />
                     </label>
-
 
                     <label>
                         Imagem
                         <Input
                             placeholder="Url da Imagem"
-                            value={imageUrl ?? ''}
+                            value={imageUrl}
                             onChange={setImageUrl}
                         />
                     </label>
 
                     <div className={styles.buttons}>
-                        <Button mensage="Cancelar" color="red" onClick={onClose}/>
+                        <Button mensage="Cancelar" color="red" onClick={onClose} />
                         <Button
-                            mensage="Salvar"
+                            mensage={isLoading ? "Salvando..." : "Salvar"}
                             color="blue"
                             onClick={handleClickSubmit}
+                            disabled={!isFormValid || isLoading}
                         />
                     </div>
-
                 </form>
             </div>
         </div>
@@ -179,7 +182,22 @@ export default function PokemonFormModal({
 }
 
 const POKEMON_TYPES = [
-    "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE",
-    "FIGHTING", "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG",
-    "ROCK", "GHOST", "DRAGON", "DARK", "STEEL", "FAIRY", ""
+    "NORMAL",
+    "FIRE",
+    "WATER",
+    "ELECTRIC",
+    "GRASS",
+    "ICE",
+    "FIGHTING",
+    "POISON",
+    "GROUND",
+    "FLYING",
+    "PSYCHIC",
+    "BUG",
+    "ROCK",
+    "GHOST",
+    "DRAGON",
+    "DARK",
+    "STEEL",
+    "FAIRY",
 ] as const;

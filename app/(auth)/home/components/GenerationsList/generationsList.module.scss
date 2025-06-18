@@ -2,10 +2,26 @@
   display: flex;
   flex-direction: column;
   padding: 2vh 2vw;
-  gap: 0.05rem;
+  gap: 0.5rem;
+  border-radius: 12px;
+  background-color: var(--background-color);
 
-  .p {
-    color: var(--text-secondary);
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
   }
 
   .pokemonSection {
@@ -15,3 +31,39 @@
     gap: 1rem;
   }
 }
+
+.icons {
+  display: flex;
+  gap: 8px;
+
+  button {
+    border: none;
+    border-radius: 50%;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .editButton {
+    background-color: var(--background-color);
+    color: var(--light-blue);
+
+    &:hover {
+      background-color: var(--light-blue);
+      color: var(--text-primary);
+    }
+  }
+
+  .closeButton {
+    background-color: var(--dark-red);
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--light-red);
+    }
+  }
+}
+

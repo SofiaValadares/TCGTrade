@@ -32,3 +32,17 @@
   background-color: var(--light-red);
   color: var(--text-primary);
 }
+
+.button:disabled,
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: transparent;
+  border-color: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.button:disabled:hover,
+.button.disabled:hover {
+  background-color: transparent;
+}

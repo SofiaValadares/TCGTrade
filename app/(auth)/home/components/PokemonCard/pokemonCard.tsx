@@ -1,6 +1,6 @@
 import styles from './pokemonCard.module.scss';
 import { PokemonResponseDto } from "@/app/types/pokemon";
-import { MdCatchingPokemon } from "react-icons/md";
+import { MdCatchingPokemon, MdEdit } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { theme } from "@/app/styles/theme";
 
@@ -8,18 +8,33 @@ interface PokemonCardProps {
     pokemon: PokemonResponseDto;
     isEditing?: boolean;
     onDelete?: (id: number) => void;
+    onEdit?: (id: number) => void;
 }
 
-export default function PokemonCard({ pokemon, isEditing = false, onDelete }: PokemonCardProps) {
+export default function PokemonCard({
+                                        pokemon,
+                                        isEditing = false,
+                                        onDelete,
+                                        onEdit
+                                    }: PokemonCardProps) {
     return (
         <div className={styles.card}>
             {isEditing && (
-                <button
-                    className={styles.closeButton}
-                    onClick={() => onDelete && onDelete(pokemon.idPokemon)}
-                >
-                    <IoClose size={16} />
-                </button>
+                <>
+                    <button
+                        className={styles.closeButton}
+                        onClick={() => onDelete && onDelete(pokemon.idPokemon)}
+                    >
+                        <IoClose size={16} />
+                    </button>
+
+                    <button
+                        className={styles.editButton}
+                        onClick={() => onEdit && onEdit(pokemon.idPokemon)}
+                    >
+                        <MdEdit size={16} />
+                    </button>
+                </>
             )}
 
             <div className={styles.imageContainer}>

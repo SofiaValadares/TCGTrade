@@ -3,7 +3,6 @@ import {PokemonResponseDto} from "@/app/types/pokemon";
 
 
 export interface GenerationRecordDto {
-  idGeneration: number;
   number: number;
   region: string;
 }
