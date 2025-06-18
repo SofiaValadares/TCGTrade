@@ -16,4 +16,8 @@
   &:focus {
     border-color: var(--light-blue);
   }
+
+  &.placeholder {
+    color: var(--text-secondary);
+  }
 }

@@ -23,7 +23,7 @@ export default function Select({
                                }: SelectProps) {
     return (
         <select
-            className={styles.select}
+            className={`${styles.select} ${value === '' ? styles.placeholder : ''}`}
             value={value}
             onChange={(e) => onChange(e.target.value)}
         >

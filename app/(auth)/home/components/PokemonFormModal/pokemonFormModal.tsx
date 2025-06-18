@@ -4,6 +4,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./pokemonFormModal.module.scss";
 import { PokemonRecordDto, PokemonResponseDto, PokemonType } from "@/app/types/pokemon";
 import Input from "@/app/components/Input";
+import Select from "@/app/components/Select";
+import { useGenerations } from "@/app/hooks/useGenerations";
+import { useCreatePokemon } from "@/app/hooks/useCreatePokemon";
+import Button from "@/app/components/Button";
+
 
 interface PokemonFormModalProps {
     isOpen: boolean;
@@ -20,6 +25,9 @@ export default function PokemonFormModal({
                                              initialData,
                                              isLoading = false,
                                          }: PokemonFormModalProps) {
+    const { data: generations, isLoading: isLoadingGenerations } = useGenerations();
+    const { mutate: createPokemon, isPending: isCreating } = useCreatePokemon();
+
     const [name, setName] = useState<string>("");
     const [number, setNumber] = useState<number>(0);
     const [generation, setGeneration] = useState<number>(1);
@@ -45,18 +53,28 @@ export default function PokemonFormModal({
         }
     }, [initialData]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        onSubmit({
+    const handleClickSubmit = () => {
+        const payload: PokemonRecordDto = {
             number,
             name,
             generation,
             primaryType,
             secondaryType,
             imageUrl,
+        };
+
+        createPokemon(payload, {
+            onSuccess: () => {
+                onClose();
+            },
+            onError: (error) => {
+                console.error("Erro ao criar Pokémon:", error);
+                alert("Erro ao criar Pokémon");
+            },
         });
     };
+
+
 
     if (!isOpen) return null;
 
@@ -64,84 +82,96 @@ export default function PokemonFormModal({
         <div className={styles.overlay}>
             <div className={styles.modal}>
                 <h2>{initialData ? "Editar Pokémon" : "Criar Pokémon"}</h2>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <Input
-                        placeholder="Número na Dex *"
-                        value={number > 0 ? String(number) : ''}
-                        onChange={(val) => {
-                            const parsed = Number(val);
-
-                            if (isNaN(parsed) || parsed <= 0) {
-                                setNumber(0);
-                            } else {
-                                setNumber(parsed);
-                            }
-                        }}
-                    />
-
-                    <Input
-                        placeholder="Nome *"
-                        value={name}
-                        onChange={setName}
-                    />
-
-
+                <form className={styles.form}>
                     <label>
-                        Geração:
-                        <input
-                            type="number"
-                            value={generation}
-                            onChange={(e) => setGeneration(Number(e.target.value))}
-                            required
+                        Pokedex
+                        <Input
+                            placeholder="Número na Dex *"
+                            value={number > 0 ? String(number) : ''}
+                            onChange={(val) => {
+                                const parsed = Number(val);
+
+                                if (isNaN(parsed) || parsed <= 0) {
+                                    setNumber(0);
+                                } else {
+                                    setNumber(parsed);
+                                }
+                            }}
                         />
                     </label>
 
                     <label>
-                        Tipo Primário:
-                        <select
-                            value={primaryType}
-                            onChange={(e) => setPrimaryType(e.target.value as PokemonType)}
-                            required
-                        >
-                            {POKEMON_TYPES.map((type) => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </select>
+                        Nome
+                        <Input
+                            placeholder="Nome *"
+                            value={name}
+                            onChange={setName}
+                        />
                     </label>
 
                     <label>
-                        Tipo Secundário (opcional):
-                        <select
-                            value={secondaryType ?? ""}
-                            onChange={(e) =>
-                                setSecondaryType(e.target.value === "" ? undefined : (e.target.value as PokemonType))
+                        Geração
+                        <Select
+                            placeholder={isLoadingGenerations ? "Carregando..." : "Selecione a geração"}
+                            value={String(generation)}
+                            onChange={(val) => setGeneration(Number(val))}
+                            options={
+                                generations?.map((gen) => ({
+                                    label: `${gen.number} GERAÇÃO`,
+                                    value: String(gen.number),
+                                })) || []
                             }
-                        >
-                            <option value="">Nenhum</option>
-                            {POKEMON_TYPES.map((type) => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </select>
+                        />
                     </label>
 
-                    <Input
-                        placeholder="Url da Imagem"
-                        value={imageUrl}
-                        onChange={setImageUrl}
-                    />
+
+                    <label>
+                        Tipo Primário
+                        <Select
+                            placeholder="Tipo Primário *"
+                            value={primaryType}
+                            onChange={(val) => setPrimaryType(val as PokemonType)}
+                            options={POKEMON_TYPES.map((type) => ({
+                                label: type,
+                                value: type,
+                            }))}
+                        />
+                    </label>
+
+                    <label>
+                        Tipo Secundário
+                        <Select
+                            placeholder="Tipo Secundário"
+                            value={secondaryType ?? ''}
+                            onChange={(val) =>
+                                setSecondaryType(val === '' ? undefined : (val as PokemonType))
+                            }
+                            options={POKEMON_TYPES.map((type) => ({
+                                label: type,
+                                value: type,
+                            }))}
+                        />
+                    </label>
+
+
+                    <label>
+                        Imagem
+                        <Input
+                            placeholder="Url da Imagem"
+                            value={imageUrl ?? ''}
+                            onChange={setImageUrl}
+                        />
+                    </label>
 
                     <div className={styles.buttons}>
-                        <button type="button" onClick={onClose}>
-                            Cancelar
-                        </button>
-                        <button type="submit" disabled={isLoading}>
-                            {isLoading ? "Salvando..." : "Salvar"}
-                        </button>
+                        <Button mensage="Cancelar" color="red" onClick={onClose}/>
+                        <Button
+                            mensage="Salvar"
+                            color="blue"
+                            onClick={handleClickSubmit}
+                        />
                     </div>
+
                 </form>
             </div>
         </div>
@@ -151,5 +181,5 @@ export default function PokemonFormModal({
 const POKEMON_TYPES = [
     "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE",
     "FIGHTING", "POISON", "GROUND", "FLYING", "PSYCHIC", "BUG",
-    "ROCK", "GHOST", "DRAGON", "DARK", "STEEL", "FAIRY",
+    "ROCK", "GHOST", "DRAGON", "DARK", "STEEL", "FAIRY", ""
 ] as const;
