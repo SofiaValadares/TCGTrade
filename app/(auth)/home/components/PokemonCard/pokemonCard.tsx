@@ -11,6 +11,10 @@ interface PokemonCardProps {
     onEdit?: (id: number) => void;
 }
 
+const getTypeIcon = (type: string) => {
+    return `https://raw.githubusercontent.com/SofiaValadares/PokemonImgs/main/types/${type.toLowerCase()}.svg`;
+};
+
 export default function PokemonCard({
                                         pokemon,
                                         isEditing = false,
@@ -47,7 +51,25 @@ export default function PokemonCard({
                 ) : (
                     <MdCatchingPokemon color={theme.text.primary} size={50} />
                 )}
+
+                <div className={styles.types}>
+                    <img
+                        className={styles.typeIcon}
+                        src={getTypeIcon(pokemon.primaryType)}
+                        alt={pokemon.primaryType}
+                        title={pokemon.primaryType}
+                    />
+                    {pokemon.secondaryType && (
+                        <img
+                            className={styles.typeIcon}
+                            src={getTypeIcon(pokemon.secondaryType)}
+                            alt={pokemon.secondaryType}
+                            title={pokemon.secondaryType}
+                        />
+                    )}
+                </div>
             </div>
+
             <h1>{pokemon.name}</h1>
         </div>
     );

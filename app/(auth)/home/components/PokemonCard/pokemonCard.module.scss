@@ -67,3 +67,20 @@
     background-color: var(--medium-blue);
   }
 }
+
+.types {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  display: flex;
+  gap: 4px;
+  background-color: transparent;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.typeIcon {
+  width: 14px;
+  height: 14px;
+}
+
