@@ -5,9 +5,11 @@ import React from "react";
 
 interface GenerationsListProps {
     generations: GenerationListResponseDto[];
+    isEditing?: boolean;
+    onDeletePokemon?: (id: number) => void;
 }
 
-export default function GenerationsList({ generations }: GenerationsListProps) {
+export default function GenerationsList({ generations, isEditing = false, onDeletePokemon }: GenerationsListProps) {
     return (
         <div>
             {generations && generations.map((generation) => (
@@ -20,6 +22,8 @@ export default function GenerationsList({ generations }: GenerationsListProps) {
                             <PokemonCard
                                 key={pokemon.idPokemon}
                                 pokemon={pokemon}
+                                isEditing={isEditing}
+                                onDelete={onDeletePokemon}
                             />
                         ))}
                     </div>

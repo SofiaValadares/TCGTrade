@@ -1,0 +1,48 @@
+.container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.mainButton {
+  background-color: var(--light-blue);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--medium-blue);
+  }
+}
+
+.secondaryButton {
+  background-color: var(--dark-blue);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s, transform 0.3s;
+
+  &.hidden {
+    opacity: 0;
+    transform: scale(0);
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: var(--medium-blue);
+  }
+}

@@ -23,3 +23,26 @@
     gap: 1rem;
   }
 }
+
+.floatingButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+
+  padding: 12px 24px;
+  background-color: var(--light-blue);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 999px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--medium-blue);
+  }
+}
+

@@ -1,33 +1,59 @@
 "use client";
 
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import style from './home.module.scss';
 import SearchBar from "@/app/components/SearchBar/SearchBar";
-import Button from "@/app/components/Button";
+import ConfirmDialog from "@/app/components/ConfirmDialog/ConfirmDialog";
 import Select from "@/app/components/Select";
-import { useQuery } from '@tanstack/react-query';
-import { GenerationListResponseDto } from "@/app/types/generation";
-import { getAllGeneration } from "@/app/services/generation";
 import PokemonCard from "@/app/(auth)/home/components/PokemonCard/pokemonCard";
 import GenerationsList from "@/app/(auth)/home/components/GenerationsList/generationsList";
+import { useGenerations } from "@/app/hooks/useGenerations";
+import { useCurrentUser } from "@/app/hooks/useCurrentUser";
+import EditFloatingMenu from "@/app/(auth)/home/components/EditFloatingMenu/editFloatingMenu";
+import { useDeletePokemon } from "@/app/hooks/useDeletePokemon";
+import PokemonFormModal from "@/app/(auth)/home/components/PokemonFormModal/pokemonFormModal";
+import { PokemonRecordDto } from "@/app/types/pokemon";
 
 export default function HomePage() {
-    const [token, setToken] = useState<string | null>(null);
     const [type, setType] = useState<'name' | 'dex'>('name');
     const [searchTerm, setSearchTerm] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const { mutate: deletePokemon, isPending } = useDeletePokemon();
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem('jwt_token');
-        setToken(storedToken);
-    }, []);
+    const { data: generations, isLoading, error } = useGenerations();
+    const { data: user } = useCurrentUser();
 
-    const { data: generations, isLoading, error } = useQuery<GenerationListResponseDto[]>({
-        queryKey: ['generation'],
-        queryFn: getAllGeneration
-    });
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [pokemonToDelete, setPokemonToDelete] = useState<number | null>(null);
+
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
     const handleSearch = (term: string) => {
         setSearchTerm(term.trim().toLowerCase());
+    };
+
+    const handleRequestDelete = (id: number) => {
+        setPokemonToDelete(id);
+        setIsConfirmOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        if (pokemonToDelete !== null) {
+            deletePokemon(pokemonToDelete);
+        }
+        setIsConfirmOpen(false);
+        setPokemonToDelete(null);
+    };
+
+    const handleCancelDelete = () => {
+        setIsConfirmOpen(false);
+        setPokemonToDelete(null);
+    };
+
+    const handleSubmitPokemon = (data: PokemonRecordDto) => {
+        console.log("Criar Pokémon:", data);
+        setIsFormOpen(false);
+        // Aqui você pode chamar o hook de criação (useCreatePokemon)
     };
 
     const allPokemons = generations?.flatMap(gen => gen.pokemons) || [];
@@ -43,6 +69,8 @@ export default function HomePage() {
 
         return true;
     });
+
+    const isAdmin = user?.roles.some(role => role.roleName === 'ROLE_ADMIN');
 
     return (
         <div>
@@ -60,13 +88,6 @@ export default function HomePage() {
                     placeholder={"Pesquisar pokémon..."}
                     onSearch={handleSearch}
                 />
-                {token ?
-                    <Button
-                        mensage="ADICIONAR POKEMON"
-                        color="blue"
-                        onClick={() => console.log("POKEMON")}
-                    />
-                : null}
             </div>
 
             <div>
@@ -81,6 +102,8 @@ export default function HomePage() {
                                     <PokemonCard
                                         key={pokemon.idPokemon}
                                         pokemon={pokemon}
+                                        isEditing={isEditing}
+                                        onDelete={handleRequestDelete}
                                     />
                                 ))}
                             </div>
@@ -89,9 +112,39 @@ export default function HomePage() {
                         )}
                     </div>
                 ) : (
-                    generations && <GenerationsList generations={generations}/>
+                    generations && <GenerationsList
+                        generations={generations}
+                        isEditing={isEditing}
+                        onDeletePokemon={handleRequestDelete}
+                    />
                 )}
             </div>
+
+            {isAdmin && (
+                <EditFloatingMenu
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    onCreatePokemon={() => setIsFormOpen(true)}
+                    onCreateGeneration={() => alert("Criar Geração")}
+                />
+            )}
+
+            {isConfirmOpen && (
+                <ConfirmDialog
+                    title="Confirmar Remoção"
+                    message="Deseja realmente remover este Pokémon?"
+                    onCancel={handleCancelDelete}
+                    onConfirm={handleConfirmDelete}
+                />
+            )}
+
+            {isFormOpen && (
+                <PokemonFormModal
+                    isOpen={isFormOpen}
+                    onClose={() => setIsFormOpen(false)}
+                    onSubmit={handleSubmitPokemon}
+                />
+            )}
         </div>
     );
 }

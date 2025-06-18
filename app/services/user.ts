@@ -19,6 +19,12 @@ export const getOneUser = async (id: number): Promise<UserRoleResponseDto> => {
   });
 };
 
+export const getCurrentUser = async (): Promise<UserRoleResponseDto> => {
+  return fetchAPI<UserRoleResponseDto>('/api/users/me', {
+    method: 'GET'
+  });
+};
+
 export const saveUser = async (data: UserRecordDto): Promise<UserRoleResponseDto> => {
   return fetchAPI<UserRoleResponseDto>('/api/users', {
     method: 'POST',
