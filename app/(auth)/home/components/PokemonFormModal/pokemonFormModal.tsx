@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./pokemonFormModal.module.scss";
 import { PokemonRecordDto, PokemonResponseDto, PokemonType } from "@/app/types/pokemon";
+import Input from "@/app/components/Input";
 
 interface PokemonFormModalProps {
     isOpen: boolean;
@@ -19,8 +20,8 @@ export default function PokemonFormModal({
                                              initialData,
                                              isLoading = false,
                                          }: PokemonFormModalProps) {
-    const [name, setName] = useState("");
-    const [numPokemon, setNumPokemon] = useState<number>(0);
+    const [name, setName] = useState<string>("");
+    const [number, setNumber] = useState<number>(0);
     const [generation, setGeneration] = useState<number>(1);
     const [primaryType, setPrimaryType] = useState<PokemonType>("NORMAL");
     const [secondaryType, setSecondaryType] = useState<PokemonType | undefined>(undefined);
@@ -29,14 +30,14 @@ export default function PokemonFormModal({
     useEffect(() => {
         if (initialData) {
             setName(initialData.name);
-            setNumPokemon(initialData.number);
+            setNumber(initialData.number);
             setGeneration(initialData.generation);
             setPrimaryType(initialData.primaryType);
             setSecondaryType(initialData.secondaryType ?? undefined);
             setImageUrl(initialData.imageUrl);
         } else {
             setName("");
-            setNumPokemon(0);
+            setNumber(0);
             setGeneration(1);
             setPrimaryType("NORMAL");
             setSecondaryType(undefined);
@@ -48,7 +49,7 @@ export default function PokemonFormModal({
         e.preventDefault();
 
         onSubmit({
-            number: numPokemon,
+            number,
             name,
             generation,
             primaryType,
@@ -64,25 +65,26 @@ export default function PokemonFormModal({
             <div className={styles.modal}>
                 <h2>{initialData ? "Editar Pokémon" : "Criar Pokémon"}</h2>
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    <label>
-                        Número da Dex:
-                        <input
-                            type="number"
-                            value={numPokemon}
-                            onChange={(e) => setNumPokemon(Number(e.target.value))}
-                            required
-                        />
-                    </label>
+                    <Input
+                        placeholder="Número na Dex *"
+                        value={number > 0 ? String(number) : ''}
+                        onChange={(val) => {
+                            const parsed = Number(val);
 
-                    <label>
-                        Nome:
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </label>
+                            if (isNaN(parsed) || parsed <= 0) {
+                                setNumber(0);
+                            } else {
+                                setNumber(parsed);
+                            }
+                        }}
+                    />
+
+                    <Input
+                        placeholder="Nome *"
+                        value={name}
+                        onChange={setName}
+                    />
+
 
                     <label>
                         Geração:
@@ -126,14 +128,11 @@ export default function PokemonFormModal({
                         </select>
                     </label>
 
-                    <label>
-                        URL da imagem:
-                        <input
-                            type="text"
-                            value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
-                        />
-                    </label>
+                    <Input
+                        placeholder="Url da Imagem"
+                        value={imageUrl}
+                        onChange={setImageUrl}
+                    />
 
                     <div className={styles.buttons}>
                         <button type="button" onClick={onClose}>

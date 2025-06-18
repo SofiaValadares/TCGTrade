@@ -1,0 +1,36 @@
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color-secondary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--border-color, transparent);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 16px;
+    outline: none;
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+  }
+}
