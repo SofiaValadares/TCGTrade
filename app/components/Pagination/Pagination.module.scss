@@ -1,0 +1,50 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.arrow {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--light-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+
+  &:hover:not(:disabled) {
+    color: var(--dark-blue);
+  }
+
+  &:disabled {
+    color: var(--text-secondary);
+    cursor: not-allowed;
+  }
+}
+
+.tracks {
+  display: flex;
+  gap: 8px;
+}
+
+.track {
+  width: 30px;
+  height: 5px;
+  border-radius: 10px;
+  background-color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--light-blue);
+  }
+}
+
+.track.active {
+  background-color: var(--light-blue);
+}

@@ -47,6 +47,7 @@ export const getAllPagePokemons = (params: PokemonPageRecordDto): Promise<BasePa
   if (params.order) queryParams.append("order", params.order);
   if (params.name) queryParams.append("name", params.name);
   if (params.number) queryParams.append("number", String(params.number));
+  if (params.generation) queryParams.append("generation", String(params.generation));
 
   return fetchAPI<BasePageResponse<PokemonResponseDto>>(`/api/pokemon/page?${queryParams.toString()}`);
 };

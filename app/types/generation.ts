@@ -17,7 +17,6 @@ export interface GenerationListResponseDto {
   idGeneration: number;
   number: number;
   region: string;
-  pokemons: PokemonResponseDto[]
 }
 
 export interface PageGenerationResponseDto extends BasePageResponse<GenerationResponseDto> {}
