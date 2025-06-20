@@ -105,7 +105,6 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                 </div>
             </div>
 
-            {/* 🔥 Gradient com menu expandível */}
             <div
                 className={`${styles.gradientMenu} ${isMenuOpen ? styles.open : ''}`}
                 ref={menuRef}
@@ -126,7 +125,7 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                         <div
                             className={styles.menuItem}
                             onClick={() => {
-                                alert('Indo para Coleções');
+                                router.push('/collections');
                                 setIsMenuOpen(false);
                             }}
                         >
@@ -135,7 +134,7 @@ export default function Header({ handleLogout = () => {} }: HeaderProps) {
                         {token && (<div
                             className={styles.menuItem}
                             onClick={() => {
-                                alert('Indo para Minha Vitrine');
+                                router.push('/showcase');
                                 setIsMenuOpen(false);
                             }}
                         >

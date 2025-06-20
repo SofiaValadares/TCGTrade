@@ -44,5 +44,11 @@ export const deleteGeneration = async (id: number): Promise<void> => {
   });
 };
 
+export const checkGenerationNumberExists = async (number: number): Promise<boolean> => {
+  const response = await fetchAPI<{ exists: boolean }>(`/api/generation/exists?number=${number}`, {
+    method: 'GET'
+  });
+  return response.exists;
+};
 
 

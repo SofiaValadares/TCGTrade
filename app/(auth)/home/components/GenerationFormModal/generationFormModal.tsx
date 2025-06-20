@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import styles from "./generationFormModal.module.scss";
-import Input from "@/app/components/Input";
-import Button from "@/app/components/Button";
+import React, { useEffect, useState } from 'react';
+import styles from './generationFormModal.module.scss';
+import Input from '@/app/components/Input';
+import Button from '@/app/components/Button';
 import {
     GenerationRecordDto,
     GenerationResponseDto,
-} from "@/app/types/generation";
+} from '@/app/types/generation';
+import { useCheckGenerationNumber } from '@/app/hooks/useCheckGenerationNumber';
 
 interface GenerationFormModalProps {
     isOpen: boolean;
@@ -25,7 +26,17 @@ export default function GenerationFormModal({
                                                 isLoading = false,
                                             }: GenerationFormModalProps) {
     const [number, setNumber] = useState<number>(0);
-    const [region, setRegion] = useState<string>("");
+    const [region, setRegion] = useState<string>('');
+
+    const isEdit = !!initialData;
+    const originalNumber = initialData?.number;
+
+    const shouldCheckDex = !isEdit || (isEdit && number !== originalNumber);
+
+    const { exists: existsNumber, isChecking } = useCheckGenerationNumber(
+        number,
+        shouldCheckDex
+    );
 
     useEffect(() => {
         if (initialData) {
@@ -33,27 +44,30 @@ export default function GenerationFormModal({
             setRegion(initialData.region);
         } else {
             setNumber(0);
-            setRegion("");
+            setRegion('');
         }
     }, [initialData]);
 
     const handleClickSubmit = () => {
         const payload: GenerationRecordDto = {
             number,
-            region
+            region,
         };
 
         onSubmit(payload);
     };
 
-    const isFormValid = number > 0 && region !== "";
+    const isFormValid =
+        number > 0 &&
+        region.trim() !== '' &&
+        (!existsNumber || !shouldCheckDex); // valida duplicado
 
     if (!isOpen) return null;
 
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>
-                <h2>{initialData ? "Editar Geração" : "Criar Geração"}</h2>
+                <h2>{initialData ? 'Editar Geração' : 'Criar Geração'}</h2>
 
                 <form className={styles.form}>
                     <label>
@@ -63,12 +77,13 @@ export default function GenerationFormModal({
                             value={number > 0 ? String(number) : ''}
                             onChange={(val) => {
                                 const parsed = Number(val);
-                                if (isNaN(parsed) || parsed <= 0) {
-                                    setNumber(0);
-                                } else {
-                                    setNumber(parsed);
-                                }
+                                setNumber(isNaN(parsed) ? 0 : parsed);
                             }}
+                            error={
+                                existsNumber && shouldCheckDex
+                                    ? 'Já existe uma geração com esse número.'
+                                    : undefined
+                            }
                         />
                     </label>
 
@@ -76,7 +91,7 @@ export default function GenerationFormModal({
                         Região *
                         <Input
                             placeholder="Região *"
-                            value={region ?? ''} // <-- evita undefined
+                            value={region}
                             onChange={setRegion}
                         />
                     </label>
@@ -84,10 +99,10 @@ export default function GenerationFormModal({
                     <div className={styles.buttons}>
                         <Button mensage="Cancelar" color="red" onClick={onClose} />
                         <Button
-                            mensage={isLoading ? "Salvando..." : "Salvar"}
+                            mensage={isLoading ? 'Salvando...' : 'Salvar'}
                             color="blue"
                             onClick={handleClickSubmit}
-                            disabled={!isFormValid || isLoading}
+                            disabled={!isFormValid || isLoading || isChecking}
                         />
                     </div>
                 </form>
