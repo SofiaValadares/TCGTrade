@@ -129,12 +129,12 @@ export default function PokemonFormModal({
                             placeholder="Tipo Primário *"
                             value={primaryType}
                             onChange={(val) => setPrimaryType(val as PokemonType)}
-                            options={POKEMON_TYPES
-                                .filter((type) => type !== secondaryType)
-                                .map((type) => ({
-                                    label: type,
-                                    value: type,
-                                }))}
+                            options={TYPE_OPTIONS
+                                .filter(
+                                    (opt) =>
+                                        opt.value !== secondaryType && // bloqueia igual ao secundário
+                                        opt.value !== ""               // bloqueia "Sem Tipo" no primário
+                                )}
                         />
                     </label>
 
@@ -144,16 +144,11 @@ export default function PokemonFormModal({
                             placeholder="Tipo Secundário"
                             value={secondaryType ?? ""}
                             onChange={(val) =>
-                                setSecondaryType(
-                                    val === "" ? undefined : (val as PokemonType)
-                                )
+                                setSecondaryType(val === "" ? undefined : (val as PokemonType))
                             }
-                            options={POKEMON_TYPES
-                                .filter((type) => type !== primaryType)
-                                .map((type) => ({
-                                    label: type,
-                                    value: type,
-                                }))}
+                            options={TYPE_OPTIONS
+                                .filter((type) => type.value !== primaryType)
+                            }
                         />
                     </label>
 
@@ -181,23 +176,25 @@ export default function PokemonFormModal({
     );
 }
 
-const POKEMON_TYPES = [
-    "NORMAL",
-    "FIRE",
-    "WATER",
-    "ELECTRIC",
-    "GRASS",
-    "ICE",
-    "FIGHTING",
-    "POISON",
-    "GROUND",
-    "FLYING",
-    "PSYCHIC",
-    "BUG",
-    "ROCK",
-    "GHOST",
-    "DRAGON",
-    "DARK",
-    "STEEL",
-    "FAIRY",
-] as const;
+const TYPE_OPTIONS = [
+    { label: "Normal", value: "NORMAL" },
+    { label: "Fogo", value: "FIRE" },
+    { label: "Água", value: "WATER" },
+    { label: "Elétrico", value: "ELECTRIC" },
+    { label: "Grama", value: "GRASS" },
+    { label: "Gelo", value: "ICE" },
+    { label: "Lutador", value: "FIGHTING" },
+    { label: "Venenoso", value: "POISON" },
+    { label: "Terrestre", value: "GROUND" },
+    { label: "Voador", value: "FLYING" },
+    { label: "Psíquico", value: "PSYCHIC" },
+    { label: "Inseto", value: "BUG" },
+    { label: "Pedra", value: "ROCK" },
+    { label: "Fantasma", value: "GHOST" },
+    { label: "Dragão", value: "DRAGON" },
+    { label: "Sombrio", value: "DARK" },
+    { label: "Aço", value: "STEEL" },
+    { label: "Fada", value: "FAIRY" },
+    { label: "Sem Tipo", value: "" },
+];
+

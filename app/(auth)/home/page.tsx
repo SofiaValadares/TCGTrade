@@ -23,7 +23,7 @@ import { useDeleteGeneration } from "@/app/hooks/useDeleteGeneration";
 import { usePokemonPage } from "@/app/hooks/usePokemonPage";
 import { usePokemonById } from "@/app/hooks/usePokemonById";
 
-import { PokemonRecordDto } from "@/app/types/pokemon";
+import { PokemonPageRecordDto, PokemonRecordDto } from "@/app/types/pokemon";
 import { GenerationRecordDto, GenerationResponseDto } from "@/app/types/generation";
 
 export default function HomePage() {
@@ -38,6 +38,13 @@ export default function HomePage() {
     const [isGenerationFormOpen, setIsGenerationFormOpen] = useState(false);
     const [generationToEdit, setGenerationToEdit] = useState<GenerationResponseDto | null>(null);
 
+    const [params, setParams] = useState<PokemonPageRecordDto>({
+        page: 0,
+        size: 10,
+        sort: "number",
+        order: "asc",
+    });
+
     const { mutate: deletePokemon } = useDeletePokemon();
     const { mutate: createPokemon } = useCreatePokemon();
     const { mutate: updatePokemon } = useUpdatePokemon();
@@ -47,17 +54,24 @@ export default function HomePage() {
 
     const { data: generations } = useGenerations();
     const { data: user } = useCurrentUser();
-
-    const {
-        items,
-        isLoading,
-        currentPage,
-        totalPages,
-        setPage,
-        updateParams,
-    } = usePokemonPage();
-
+    const { data, isLoading } = usePokemonPage(params);
     const { data: pokemonToEdit } = usePokemonById(pokemonIdToEdit);
+
+    const items = data?.content ?? [];
+    const currentPage = data?.number ?? 0;
+    const totalPages = data?.totalPages ?? 1;
+
+    const setPage = (page: number) => {
+        setParams((prev) => ({ ...prev, page }));
+    };
+
+    const updateParams = (newParams: Partial<PokemonPageRecordDto>) => {
+        setParams((prev) => ({
+            ...prev,
+            ...newParams,
+            page: 0, // resetar a página quando muda filtros
+        }));
+    };
 
     const handleSearch = (term: string) => {
         setSearchTerm(term.trim().toLowerCase());

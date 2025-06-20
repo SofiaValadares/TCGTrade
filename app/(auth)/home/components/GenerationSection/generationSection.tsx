@@ -9,6 +9,7 @@ import { MdEdit } from "react-icons/md";
 
 import { GenerationListResponseDto } from "@/app/types/generation";
 import { usePokemonPage } from "@/app/hooks/usePokemonPage";
+import { useState } from "react";
 
 interface GenerationSectionProps {
     generation: GenerationListResponseDto;
@@ -27,15 +28,20 @@ export default function GenerationSection({
                                               onDeletePokemon,
                                               onEditPokemon
                                           }: GenerationSectionProps) {
-    const {
-        items,
-        currentPage,
-        totalPages,
-        isLoading,
-        setPage,
-    } = usePokemonPage({
+
+    const [page, setPage] = useState(0);
+
+    const { data, isLoading } = usePokemonPage({
+        page,
+        size: 10,
+        sort: "number",
+        order: "asc",
         generation: generation.number,
     });
+
+    const items = data?.content ?? [];
+    const currentPage = data?.number ?? 0;
+    const totalPages = data?.totalPages ?? 1;
 
     return (
         <div className={styles.generationSection}>
@@ -91,3 +97,4 @@ export default function GenerationSection({
         </div>
     );
 }
+

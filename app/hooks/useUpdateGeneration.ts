@@ -1,14 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateGeneration } from '../services/generation';
-import { GenerationRecordDto, GenerationResponseDto } from '../types/generation';
+import { updateGeneration } from '@/app/services/generation';
+import { GenerationRecordDto } from '@/app/types/generation';
 
 export const useUpdateGeneration = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<GenerationResponseDto, Error, { id: number; data: GenerationRecordDto }>({
-        mutationFn: ({ id, data }) => updateGeneration(id, data),
+    return useMutation({
+        mutationFn: ({ id, data }: { id: number; data: GenerationRecordDto }) =>
+            updateGeneration(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['generations'] });
-        }
+        },
     });
 };
