@@ -6,12 +6,11 @@ import style from "./home.module.scss";
 import SearchBar from "@/app/components/SearchBar/SearchBar";
 import ConfirmDialog from "@/app/components/ConfirmDialog/ConfirmDialog";
 import Select from "@/app/components/Select";
-import PokemonCard from "@/app/(auth)/home/components/PokemonCard/pokemonCard";
-import GenerationsList from "@/app/(auth)/home/components/GenerationsList/generationsList";
 import EditFloatingMenu from "@/app/(auth)/home/components/EditFloatingMenu/editFloatingMenu";
 import PokemonFormModal from "@/app/(auth)/home/components/PokemonFormModal/pokemonFormModal";
 import GenerationFormModal from "@/app/(auth)/home/components/GenerationFormModal/generationFormModal";
-import Pagination from "@/app/components/Pagination/Pagination";
+import GenerationsList from "@/app/(auth)/home/components/GenerationsList/generationsList";
+import PokemonSearchResult from "@/app/(auth)/home/components/PokemonSearchResult/pokemonSearchResult";
 
 import { useGenerations } from "@/app/hooks/useGenerations";
 import { useCurrentUser } from "@/app/hooks/useCurrentUser";
@@ -29,51 +28,36 @@ import { GenerationRecordDto, GenerationResponseDto } from "@/app/types/generati
 
 export default function HomePage() {
     const [type, setType] = useState<"name" | "dex">("name");
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState<string>("");
+
     const [isEditing, setIsEditing] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [pokemonToDelete, setPokemonToDelete] = useState<number | null>(null);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [pokemonIdToEdit, setPokemonIdToEdit] = useState<number | null>(null);
+    const [isGenerationFormOpen, setIsGenerationFormOpen] = useState(false);
+    const [generationToEdit, setGenerationToEdit] = useState<GenerationResponseDto | null>(null);
 
     const { mutate: deletePokemon } = useDeletePokemon();
     const { mutate: createPokemon } = useCreatePokemon();
     const { mutate: updatePokemon } = useUpdatePokemon();
-
     const { mutate: createGeneration } = useCreateGeneration();
     const { mutate: updateGeneration } = useUpdateGeneration();
     const { mutate: deleteGeneration } = useDeleteGeneration();
 
-    const {
-        data: generations,
-        refetch: refetchGenerations
-    } = useGenerations();
-
+    const { data: generations } = useGenerations();
     const { data: user } = useCurrentUser();
-
-    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-    const [pokemonToDelete, setPokemonToDelete] = useState<number | null>(null);
-
-    const [isFormOpen, setIsFormOpen] = useState(false);
-    const [pokemonIdToEdit, setPokemonIdToEdit] = useState<number | null>(null);
-
-    const [isGenerationFormOpen, setIsGenerationFormOpen] = useState(false);
-    const [generationToEdit, setGenerationToEdit] = useState<GenerationResponseDto | null>(null);
 
     const {
         items,
         isLoading,
         currentPage,
         totalPages,
-        nextPage,
-        prevPage,
-        updateParams,
         setPage,
-        refetch: refetchPokemons,
-    } = usePokemonPage({
-        page: 0,
-        size: 10,
-        sort: "number",
-        order: "asc",
-    });
+        updateParams,
+    } = usePokemonPage();
 
-    const { data: pokemonToEdit, isLoading: isLoadingPokemon } = usePokemonById(pokemonIdToEdit);
+    const { data: pokemonToEdit } = usePokemonById(pokemonIdToEdit);
 
     const handleSearch = (term: string) => {
         setSearchTerm(term.trim().toLowerCase());
@@ -129,22 +113,12 @@ export default function HomePage() {
 
     const handleSubmitPokemon = (data: PokemonRecordDto) => {
         if (pokemonIdToEdit) {
-            updatePokemon(
-                { id: pokemonIdToEdit, data },
-                {
-                    onSuccess: () => {
-                        setIsFormOpen(false);
-                        setPokemonIdToEdit(null);
-                    },
-                }
-            );
+            updatePokemon({ id: pokemonIdToEdit, data });
         } else {
-            createPokemon(data, {
-                onSuccess: () => {
-                    setIsFormOpen(false);
-                },
-            });
+            createPokemon(data);
         }
+        setIsFormOpen(false);
+        setPokemonIdToEdit(null);
     };
 
     const handleRequestDeleteGeneration = (id: number) => {
@@ -153,7 +127,6 @@ export default function HomePage() {
 
     const handleEditGeneration = (id: number) => {
         const found = generations?.find((gen) => gen.idGeneration === id);
-
         if (found) {
             const generationToSet: GenerationResponseDto = {
                 idGeneration: found.idGeneration,
@@ -164,32 +137,19 @@ export default function HomePage() {
                 dateChanged: "",
                 userChanged: "",
             };
-
             setGenerationToEdit(generationToSet);
             setIsGenerationFormOpen(true);
-        } else {
-            console.error("Geração não encontrada para o ID:", id);
         }
     };
 
     const handleSubmitGeneration = (data: GenerationRecordDto) => {
         if (generationToEdit) {
-            updateGeneration(
-                { id: generationToEdit.idGeneration, data },
-                {
-                    onSuccess: () => {
-                        setIsGenerationFormOpen(false);
-                        setGenerationToEdit(null);
-                    },
-                }
-            );
+            updateGeneration({ id: generationToEdit.idGeneration, data });
         } else {
-            createGeneration(data, {
-                onSuccess: () => {
-                    setIsGenerationFormOpen(false);
-                },
-            });
+            createGeneration(data);
         }
+        setIsGenerationFormOpen(false);
+        setGenerationToEdit(null);
     };
 
     const isAdmin = user?.roles.some((role) => role.roleName === "ROLE_ADMIN");
@@ -214,33 +174,16 @@ export default function HomePage() {
 
             <div>
                 {searchTerm ? (
-                    <div className={style.generationSection}>
-                        {isLoading ? (
-                            <p>Carregando pokémons...</p>
-                        ) : items.length > 0 ? (
-                            <div className={style.pokemonSection}>
-                                {items.map((pokemon) => (
-                                    <PokemonCard
-                                        key={pokemon.idPokemon}
-                                        pokemon={pokemon}
-                                        isEditing={isEditing}
-                                        onDelete={handleRequestDelete}
-                                        onEdit={handleEditPokemon}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <p>Nenhum Pokémon encontrado.</p>
-                        )}
-
-                        <div className={style.pagination}>
-                            <Pagination
-                                currentPage={currentPage}
-                                totalPages={totalPages}
-                                setPage={setPage}
-                            />
-                        </div>
-                    </div>
+                    <PokemonSearchResult
+                        pokemons={items}
+                        isLoading={isLoading}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        setPage={setPage}
+                        isEditing={isEditing}
+                        onDelete={handleRequestDelete}
+                        onEdit={handleEditPokemon}
+                    />
                 ) : (
                     generations && (
                         <GenerationsList

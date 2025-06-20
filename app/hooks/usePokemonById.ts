@@ -11,6 +11,6 @@ export const usePokemonById = (id: number | null) => {
             }
             return getOnePokemon(id);
         },
-        enabled: id !== null, // só executa se tiver id
+        enabled: id !== null,
     });
 };

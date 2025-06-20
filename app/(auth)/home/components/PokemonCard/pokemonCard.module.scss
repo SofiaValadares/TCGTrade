@@ -3,46 +3,55 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  gap: 0.2rem;
+
+  width: 8vw;
+  height: auto;
 
   h1 {
     font-size: 11px;
+    text-align: center;
+    word-break: break-word;
   }
 }
 
-
 .imageContainer {
-  position: relative; // Permite posicionar elementos dentro
+  position: relative;
   display: flex;
   background-color: var(--background-color-secondary);
   justify-content: center;
   align-items: center;
-  height: 6vw;
-  width:6vw;
-  padding: 1rem;
+
+  width: 8vw;
+  height: 8vw;
+
+  padding: 0; // 🔥 Removido para reduzir o tamanho visual
   border-radius: 8px;
 }
 
+/* 🔥 Número da Dex */
 .dexNumber {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 2px;
+  left: 2px;
   color: var(--text-primary);
   background-color: color-mix(in srgb, var(--background-color-secondary) 60%, transparent);
-  font-size: 10px;
-  padding: 2px 6px;
+  font-size: 9px;
+  padding: 2px 4px;
   border-radius: 4px;
   font-weight: bold;
 }
 
+/* 🔥 Botão Fechar */
 .closeButton {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 2px;
+  right: 2px;
   background-color: var(--dark-red);
   color: var(--text-primary);
   border: none;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
   cursor: pointer;
   z-index: 10;
 
@@ -51,15 +60,16 @@
   }
 }
 
+/* 🔥 Botão Editar */
 .editButton {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 2px;
+  left: 2px;
   background-color: var(--light-blue);
   color: var(--text-primary);
   border: none;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
   cursor: pointer;
   z-index: 10;
 
@@ -68,19 +78,20 @@
   }
 }
 
+/* 🔥 Tipos */
 .types {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
+  bottom: 2px;
+  right: 2px;
   display: flex;
-  gap: 4px;
+  gap: 2px;
   background-color: transparent;
   padding: 2px 4px;
   border-radius: 4px;
 }
 
+/* 🔥 Ícones dos tipos */
 .typeIcon {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
-

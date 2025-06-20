@@ -1,0 +1,21 @@
+.generationSection {
+  display: flex;
+  flex-direction: column;
+  padding: 2vh 2vw;
+  gap: 1rem;
+
+  .pokemonSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+}
