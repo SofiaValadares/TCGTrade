@@ -52,5 +52,11 @@ export const getAllPagePokemons = (params: PokemonPageRecordDto): Promise<BasePa
   return fetchAPI<BasePageResponse<PokemonResponseDto>>(`/api/pokemon/page?${queryParams.toString()}`);
 };
 
+export const checkDexNumberExists = async (number: number): Promise<boolean> => {
+  const response = await fetchAPI<{ exists: boolean }>(`/api/pokemon/exists?number=${number}`, {
+    method: 'GET'
+  });
+  return response.exists;
+};
 
 

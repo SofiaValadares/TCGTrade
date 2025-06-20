@@ -1,3 +1,8 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
 .inputWrapper {
   display: flex;
   align-items: center;
@@ -33,4 +38,14 @@
     justify-content: center;
     color: var(--text-primary);
   }
+}
+
+.inputError {
+  border: 1px solid var(--light-red);
+}
+
+.error {
+  color: var(--light-red);
+  font-size: 10px;
+  margin-top: 2px;
 }

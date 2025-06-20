@@ -69,7 +69,7 @@ export default function HomePage() {
         setParams((prev) => ({
             ...prev,
             ...newParams,
-            page: 0, // resetar a página quando muda filtros
+            page: 0,
         }));
     };
 

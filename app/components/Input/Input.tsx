@@ -11,6 +11,7 @@ interface InputProps {
     iconLeft?: React.ReactNode;
     iconRight?: React.ReactNode;
     disabled?: boolean;
+    error?: string;
 }
 
 export default function Input({
@@ -20,24 +21,34 @@ export default function Input({
                                   type = 'text',
                                   iconLeft,
                                   iconRight,
-                                  disabled = false
+                                  disabled = false,
+                                  error,
                               }: InputProps) {
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
     };
 
     return (
-        <div className={styles.inputWrapper}>
-            {iconLeft && <div className={styles.icon}>{iconLeft}</div>}
-            <input
-                type={type}
-                value={value}
-                placeholder={placeholder}
-                onChange={handleChange}
-                disabled={disabled}
-            />
-            {iconRight && <div className={styles.icon}>{iconRight}</div>}
+        <div className={styles.container}>
+            <div
+                className={`${styles.inputWrapper} ${
+                    error ? styles.inputError : ''
+                }`}
+            >
+                {iconLeft && <div className={styles.icon}>{iconLeft}</div>}
+
+                <input
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={handleChange}
+                    disabled={disabled}
+                />
+
+                {iconRight && <div className={styles.icon}>{iconRight}</div>}
+            </div>
+
+            {error && <p className={styles.error}>{error}</p>}
         </div>
     );
 }
