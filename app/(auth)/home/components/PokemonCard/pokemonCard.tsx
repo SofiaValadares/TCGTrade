@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import styles from './pokemonCard.module.scss';
 import { PokemonResponseDto } from "@/app/types/pokemon";
 import { MdCatchingPokemon, MdEdit } from "react-icons/md";
@@ -21,20 +22,35 @@ export default function PokemonCard({
                                         onDelete,
                                         onEdit
                                     }: PokemonCardProps) {
+    const router = useRouter();
+
+    const handleNavigate = () => {
+        router.push(`/pokemons/${pokemon.idPokemon}`);
+    };
+
     return (
-        <div className={styles.card}>
+        <div
+            className={styles.card}
+            onClick={handleNavigate}
+        >
             {isEditing && (
                 <>
                     <button
                         className={styles.closeButton}
-                        onClick={() => onDelete && onDelete(pokemon.idPokemon)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete && onDelete(pokemon.idPokemon);
+                        }}
                     >
                         <IoClose size={16} />
                     </button>
 
                     <button
                         className={styles.editButton}
-                        onClick={() => onEdit && onEdit(pokemon.idPokemon)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit && onEdit(pokemon.idPokemon);
+                        }}
                     >
                         <MdEdit size={16} />
                     </button>
