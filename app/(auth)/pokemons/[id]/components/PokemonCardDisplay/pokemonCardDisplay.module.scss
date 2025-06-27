@@ -1,0 +1,27 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  width: 15vw;
+  text-align: center;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 20px;
+  padding: 8px;
+}
+
+.collectionName {
+  font-size: 16px;
+  color: var(--text-primary);
+}

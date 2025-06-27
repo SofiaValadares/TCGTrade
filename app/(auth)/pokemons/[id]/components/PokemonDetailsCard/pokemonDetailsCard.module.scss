@@ -1,0 +1,71 @@
+.detailsCard {
+  background-color: var(--background-color);
+  border: 5px solid transparent;
+  border-radius: 16px;
+  background-image:
+          linear-gradient(var(--background-color), var(--background-color)),
+          var(--primary-gradient);
+
+  background-origin: border-box;
+  background-clip:   padding-box, border-box;
+
+  padding: 24px 32px;
+  width: 90%;
+  margin: 40px auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  transition: transform .3s ease;
+
+}
+
+
+.imageContainer {
+  background-color: var(--background-color-secondary);
+  padding: 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 12px;
+    padding: 8px;
+  }
+}
+
+.detailsInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailsInfo h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.detailsInfo p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.types {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.typeIcon {
+  width: 36px;
+  height: 36px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+}

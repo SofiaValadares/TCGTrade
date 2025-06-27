@@ -1,0 +1,24 @@
+.cardsSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 24px;
+  border-radius: 16px;
+  width: 90vw;
+}
+
+.cardsGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2.5vw;
+}
+
+.feedback {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 24px 0;
+}
