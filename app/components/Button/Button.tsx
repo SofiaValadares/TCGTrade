@@ -5,11 +5,13 @@ interface ButtonProps {
     color?: 'red' | 'blue';
     onClick?: () => void;
     disabled?: boolean;
+    type?: "button" | "submit" | "reset";
 }
 
-export default function Button({ mensage, color, onClick, disabled = false }: ButtonProps) {
+export default function Button({ mensage, color, onClick, disabled = false, type = "button" }: ButtonProps) {
     return (
         <button
+            type={type}
             className={`${styles.button} ${color ? styles[color] : ''} ${disabled ? styles.disabled : ''}`}
             onClick={disabled ? undefined : onClick}
             disabled={disabled}
@@ -18,3 +20,4 @@ export default function Button({ mensage, color, onClick, disabled = false }: Bu
         </button>
     );
 }
+

@@ -1,6 +1,6 @@
 import { BaseAuditFields, BasePageResponse } from './common';
 
-export type RoleName = 'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_GUEST';
+export type RoleName = 'ROLE_ADMIN' | 'ROLE_USER' | 'ROLE_MASTER';
 
 export interface RoleModel extends BaseAuditFields {
   idRole: number;
@@ -16,14 +16,8 @@ export interface RoleResponseDto extends RoleModel {}
 
 export interface UserRecordDto {
   name: string;
-  email: string;
   username: string;
   password: string;
-  accountNonExpired?: boolean;
-  accountNonLocked?: boolean;
-  credentialsNonExpired?: boolean;
-  enabled?: boolean;
-  roles?: RoleModel[];
 }
 
 export interface UserRecordPostDto {

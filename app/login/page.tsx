@@ -66,8 +66,8 @@ export default function LoginPage() {
           </div>
 
           <div className={styles.loginButtonRow}>
-            <Button mensage="LOGIN" color="blue" onClick={() => console.log('Login clicado')} />
-            <Button mensage="CADASTRO" color="red" onClick={() => console.log('Abrir cadastro')} />
+            <Button mensage="LOGIN" color="blue" type="submit" />
+            <Button mensage="CADASTRO" color="red" onClick={() => router.push("/register")} />
           </div>
 
           {mutation.isError && (

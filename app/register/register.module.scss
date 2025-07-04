@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.registerContainer {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.registerForm {
+  width: 40vw;
+
+  .registerTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    .h1 {
+      color: var(--text-primary);
+    }
+  }
+}
+
+.inputGroup {
+  margin-bottom: 1.25rem;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--background-color);
+    border: 1px solid var(--text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .input::placeholder {
+    color: #686868;
+  }
+}
+
+.registerButtonRow {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.errorMessage {
+  color: var(--light-red);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}

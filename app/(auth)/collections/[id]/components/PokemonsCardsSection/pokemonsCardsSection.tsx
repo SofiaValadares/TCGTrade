@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./pokemonsCardsSection.module.scss";
 import { useCard } from "@/app/hooks/useCard";
-import PokemonCardDisplay from "@/app/(auth)/pokemons/[id]/components/PokemonCardDisplay/pokemonCardDisplay";
+import PokemonCardDisplay from "../PokemonCardDisplay/pokemonCardDisplay";
 
 interface PokemonsCardsSectionProps {
     collection: number;
